@@ -115,8 +115,17 @@ def update():
                           sw_lat=sw_lat, ne_lat=ne_lat, sw_lng=sw_lng, ne_lng=ne_lng)
         rows = cursor.fetchall()
         cursor.close()
+    json_data=[]
+    content = {}
+    for result in rows:
+        content = {'country_code':result[0],'place_name':result[1],'admin_code1':result[2], \
+            'admin_name1':result[3], 'latitude':result[4], 'longitude':result[5]}
+        json_data.append(content)
+        content = {}
+    print(json_data)
+    return jsonify(json_data)
     # Output places as JSON
-    return jsonify(rows)
+    return jsonify(json_data)
 
 if __name__ == '__main__':
     # This is used when running locally only. When deploying to Google App
