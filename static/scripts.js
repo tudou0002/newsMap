@@ -67,9 +67,10 @@ $(document).ready(function() {
         zoomControl: true
     });
 
+    
     google.maps.event.addListenerOnce(map, "idle", configure);
 
-})
+});
 
 // add a marker to the map
 function addMarker(place)
@@ -96,7 +97,7 @@ function addMarker(place)
       content += "</ul>";
       showInfo(marker, content);
     })
-  })
+  });
 
   markers.push(marker);
 }
@@ -132,14 +133,14 @@ function configure()
         templates: {
             suggestion: Handlebars.compile(
                 "<div>" +
-                "{{place_name}}, {{admin_name1}}" +
+                "{{ place_name }}, {{ admin_name1 }}" +
                 "</div>"
             )
         }
     });
 
     // Re-center map after place is selected from drop-down
-    $("#q").on("typeahead:selected", function(eventObject, suggestion, name) {
+    $("#q").on("typeahead:select", function(eventObject, suggestion, name) {
 
         // Set map's center
         map.setCenter({lat: parseFloat(suggestion.latitude), lng: parseFloat(suggestion.longitude)});
@@ -185,7 +186,8 @@ function search(query, syncResults, asyncResults)
   let parameters = {
     q: query
   };
-  $.getJSON("/search", parameters, function(data, textStatus, jqXHR) {
+  $.getJSON("/search", parameters)
+   .done(function(data, textStatus, jqXHR) {
 
     // Call typeahead's callback with search results (i.e., places)
     asyncResults(data);
@@ -244,4 +246,4 @@ function update()
           
        }
     });
-};
+}
