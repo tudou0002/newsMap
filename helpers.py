@@ -1,28 +1,27 @@
 import urllib.parse
 import feedparser
+from newsapi import NewsApiClient
 
 def lookup(geo):
     """Look up articles for geo"""
 
-    # Check cache
-    try:
-        if geo in lookup.cache:
-            return lookup.cache[geo]
-    except AttributeError:
-        lookup.cache = {}
+    newsapi = NewsApiClient(api_key='5d2ceadf7be44440bc1962f85c6f1c0e')
 
-    # Replace special characters
-    escaped = urllib.parse.quote(geo, safe="")
-
-    # Get feed from Google
-    feed = feedparser.parse(f"https://news.google.com/news/rss/local/section/geo/{escaped}")
-
+    # get everything in this location sorted by publish time in a dictionary
+    all = newsapi.get_everything(q=geo, 
+                                 language='en',
+                                 sources='cbc-news',
+                                 domains='cbc.ca'
+                                 )
     # If no items in feed, get feed from Onion
-    if not feed["items"]:
+    if not all:
         feed = feedparser.parse("http://www.theonion.com/feeds/rss")
-
-    # Cache results
-    lookup.cache[geo] = [{"link": item["link"], "title": item["title"]} for item in feed["items"]]
-
-    # Return results
-    return lookup.cache[geo]
+        return feed[:5]
+    sources = all.get('articles')
+    result=[]
+    row = {}
+    for news in sources:
+        row = {'title':news.get('title'), 'link': news.get('url')}
+        result.append(row)
+        row={}
+    return result

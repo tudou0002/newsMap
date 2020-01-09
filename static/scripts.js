@@ -86,7 +86,7 @@ function addMarker(place)
   marker.addListener('click', function() {
     showInfo(marker);
     var parameters = {
-      geo: '02138'
+      geo: place.place_name
     };
     $.getJSON("/articles", parameters)
       .done(function(data){

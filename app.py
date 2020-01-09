@@ -61,9 +61,8 @@ def articles():
 
     # call helper function and return the first five in the list
     results = lookup(request.args.get("geo"))
-    j = jsonify(results[:5])
-    print(json.dumps(j, indent=4, sort_key=True))
-    return j
+    # j = jsonify(results[:5])
+    return json.dumps(results)
 
 
 @app.route("/update")
@@ -123,7 +122,6 @@ def update():
         json_data.append(content)
         content = {}
     print(json_data)
-    return jsonify(json_data)
     # Output places as JSON
     return jsonify(json_data)
 
