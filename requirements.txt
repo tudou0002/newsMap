@@ -3,3 +3,4 @@ feedparser
 flask-mysql
 sgmllib3k
 newsapi-python
+gunicorn
