@@ -1,6 +1,6 @@
 import urllib.parse
 import feedparser
-from newsapi import NewsApiClient
+from newsapi.newsapi_client import NewsApiClient
 
 def lookup(geo):
     """Look up articles for geo"""
